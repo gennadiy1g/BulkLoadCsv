@@ -17,7 +17,6 @@ int main(int argc, char** argv)
             ("help,?", "Print usage information and exit.") //
             ("separator,S", bpo::value<char>()->default_value(','), "Field separator character.") //
             ("quote,Q", bpo::value<char>()->default_value('"'), "String quote character.") //
-            ("host,H", bpo::value<std::string>()->default_value("localhost"), "Name of the host on which the server runs.") //
             ("port,P", bpo::value<int>()->default_value(50000), "Port number of the server.") //
             ("uid,U", bpo::value<std::string>()->default_value("monetdb"), "User to connect as.") //
             ("pwd,P", bpo::value<std::string>()->default_value("monetdb"), "Password.");
