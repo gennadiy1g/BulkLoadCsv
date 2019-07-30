@@ -8,14 +8,20 @@ int main(int argc, char** argv)
 {
     try {
         bpo::options_description hiddenOptions("Hidden options");
-        hiddenOptions.add_options()("file-name", bpo::value<std::string>(), "file name")("table-name", bpo::value<std::string>(), "table name");
+        hiddenOptions.add_options() //
+            ("file-name", bpo::value<std::string>(), "file name") //
+            ("table-name", bpo::value<std::string>()->default_value(""), "table name");
 
         bpo::options_description visibleOptions("Allowed options");
-        visibleOptions.add_options()("help,?", "Print usage information and exit.");
-        visibleOptions.add_options()("separator,S", "Field separator character.")("quote,Q", "String quote character.");
-        visibleOptions.add_options()("driver,D", "ODBC driver name (default MonetDB ODBC Driver)");
-        visibleOptions.add_options()("host,H", "name of the host on which the server runs (default: localhost)")("port,P", "portnumber of the server (default: 50000)");
-        visibleOptions.add_options()("uid,U", "user to connect as (default monetdb)")("pwd,P", "user's password (default monetdb)");
+        visibleOptions.add_options() //
+            ("help,?", "Print usage information and exit.") //
+            ("separator,S", bpo::value<char>()->default_value(','), "Field separator character.") //
+            ("quote,Q", bpo::value<char>()->default_value('"'), "String quote character.") //
+            ("driver,D", bpo::value<std::string>()->default_value("MonetDB ODBC Driver"), "ODBC driver name.") //
+            ("host,H", bpo::value<std::string>()->default_value("localhost"), "Name of the host on which the server runs.") //
+            ("port,P", bpo::value<int>()->default_value(50000), "Port number of the server.") //
+            ("uid,U", bpo::value<std::string>()->default_value("monetdb"), "User to connect as.") //
+            ("pwd,P", bpo::value<std::string>()->default_value("monetdb"), "Password.");
 
         bpo::options_description commandLineOptions;
         commandLineOptions.add(visibleOptions).add(hiddenOptions);
