@@ -19,7 +19,9 @@ int main(int argc, char** argv)
             ("quote,Q", bpo::value<char>()->default_value('"'), "String quote character.") //
             ("port,P", bpo::value<int>()->default_value(50000), "Port number of the server.") //
             ("uid,U", bpo::value<std::string>()->default_value("monetdb"), "User to connect as.") //
-            ("pwd,P", bpo::value<std::string>()->default_value("monetdb"), "Password.");
+            ("pwd", bpo::value<std::string>()->default_value("monetdb"), "Password.") //
+            ("print-sql", "Scan the file and print the generated SQL commands before executing them.") //
+            ("dry-run,D", "Scan the file and print the generated SQL commands but do not execute them.");
 
         bpo::options_description commandLineOptions;
         commandLineOptions.add(visibleOptions).add(hiddenOptions);
@@ -32,6 +34,11 @@ int main(int argc, char** argv)
         notify(variablesMap);
 
         if (variablesMap.count("help")) {
+            std::cout << "Usage: BulkLoadCsv [OPTION]... FILE [TABLE]\n\n"
+                         "Bulk load a delimited text file FILE into a table TABLE in a MonetDB database.\n\n"
+                         "Scan the delimited text file FILE and detect data types, lengths and NULL (NOT NULL)\n"
+                         "constraints of the columns. Then generate and execute DROP TABLE, CREATE TABLE and \n"
+                         "COPY INTO SQL commands. The first line of the file FILE must contain names of the columns.\n\n";
             std::cout << visibleOptions << std::endl;
             return 0;
         }
