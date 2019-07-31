@@ -13,14 +13,14 @@ int main(int argc, char** argv)
 
         bpo::options_description hiddenOptions("Hidden options");
         hiddenOptions.add_options() //
-            ("file-name", bpo::value<std::string>(), "file name") //
+            ("file-name", bpo::wvalue<std::string>(), "file name") //
             ("table-name", bpo::value<std::string>()->default_value(""), "table name");
 
         bpo::options_description visibleOptions("Allowed options");
         visibleOptions.add_options() //
             ("help,?", "Print usage information and exit.") //
-            ("separator,S", bpo::value<char>()->default_value(','), "Field separator character.") //
-            ("quote,Q", bpo::value<char>()->default_value('"'), "String quote character.") //
+            ("separator,S", bpo::wvalue<std::string>()->default_value(","), "Field separator character.") //
+            ("quote,Q", bpo::wvalue<std::string>()->default_value("\""), "String quote character.") //
             ("port,P", bpo::value<int>()->default_value(50000), "Port number of the server.") //
             ("uid,U", bpo::value<std::string>()->default_value("monetdb"), "User to connect as.") //
             ("pwd", bpo::value<std::string>()->default_value("monetdb"), "Password.") //
