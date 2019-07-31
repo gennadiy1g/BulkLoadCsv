@@ -37,7 +37,7 @@ int main(int argc, char** argv)
         store(bpo::command_line_parser(argc, argv).options(commandLineOptions).positional(positionalOptions).run(), variablesMap);
         notify(variablesMap);
 
-        if (variablesMap.count("help") || (argc == 1)) {
+        if (variablesMap.count("help") || (!variablesMap.count("file-name"))) {
             std::cout << "Usage: BulkLoadCsv [OPTION]... FILE [TABLE]\n\n"
                          "Bulk load a delimited text file FILE into a table TABLE in a MonetDB database.\n\n"
                          "Scan the delimited text file FILE and detect data types, lengths and NULL (NOT NULL)\n"
