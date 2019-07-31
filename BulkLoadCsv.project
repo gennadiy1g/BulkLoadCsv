@@ -8,6 +8,8 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
+    <File Name="../CsvFileParser/utilities.h"/>
+    <File Name="../CsvFileParser/utilities.cpp"/>
     <File Name="main.cpp"/>
   </VirtualDirectory>
   <Dependencies Name="Debug"/>
@@ -16,10 +18,20 @@
     <GlobalSettings>
       <Compiler Options="-std=c++17" C_Options="" Assembler="">
         <IncludePath Value="."/>
+        <IncludePath Value="../CsvFileParser"/>
       </Compiler>
       <Linker Options="">
         <LibraryPath Value="."/>
         <Library Value="libboost_program_options.a"/>
+        <Library Value="libboost_log_setup.a"/>
+        <Library Value="libboost_log.a"/>
+        <Library Value="libboost_thread.a"/>
+        <Library Value="libboost_filesystem.a"/>
+        <Library Value="libboost_locale.a"/>
+        <Library Value="libboost_date_time.a"/>
+        <Library Value="libboost_unit_test_framework.a"/>
+        <Library Value="libodbc32.a"/>
+        <Library Value="libodbccp32.a"/>
       </Linker>
       <ResourceCompiler Options=""/>
     </GlobalSettings>

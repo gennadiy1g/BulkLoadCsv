@@ -2,11 +2,15 @@
 #include <iostream>
 #include <stdio.h>
 
+#include "utilities.h"
+
 namespace bpo = boost::program_options;
 
 int main(int argc, char** argv)
 {
     try {
+        initLocalization();
+
         bpo::options_description hiddenOptions("Hidden options");
         hiddenOptions.add_options() //
             ("file-name", bpo::value<std::string>(), "file name") //
