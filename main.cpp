@@ -14,7 +14,7 @@ int main(int argc, char** argv)
         bpo::options_description hiddenOptions("Hidden options");
         hiddenOptions.add_options() //
             ("file-name", bpo::wvalue<std::string>(), "file name") //
-            ("table-name", bpo::value<std::string>()->default_value(""), "table name");
+            ("table-name", bpo::wvalue<std::string>()->default_value(""), "table name");
 
         bpo::options_description visibleOptions("Allowed options");
         visibleOptions.add_options() //
