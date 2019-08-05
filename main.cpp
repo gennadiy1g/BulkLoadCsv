@@ -10,6 +10,7 @@
 #include <iostream>
 #include <stdio.h>
 
+#include "MonetDBBulkLoader.h"
 #include "utilities.h"
 
 namespace bpo = boost::program_options;
@@ -57,10 +58,16 @@ extern "C" int wmain(int argc, wchar_t** argv)
                           "COPY INTO SQL commands. The first line of the file FILE must contain names of the columns.\n\n";
             std::cout << visibleOptions << std::endl;
             return 0;
-        }
-
-        if (variablesMap.count("file-name")) {
-            std::wcout << L"Scanning " << variablesMap["file-name"].as<std::wstring>() << std::endl;
+        } else {
+            if (variablesMap.count("file-name")) {
+                std::wcout << L"Scanning " << variablesMap["file-name"].as<std::wstring>() << std::endl;
+            }
+            MonetDBBulkLoader bulkLoader(variablesMap["file-name"].as<std::wstring>());
+            bulkLoader.parse(variablesMap["separator"].as<std::wstring>()[0], variablesMap["quote"].as<std::wstring>()[0]);
+            auto rejectedRecords = bulkLoader.load(variablesMap["table-name"].as<std::wstring>());
+            if (rejectedRecords.value_or(0) > 0) {
+                std::wcout << "Rejected " << rejectedRecords.value() << " records.";
+            }
         }
     } catch (const std::exception& e) {
         std::wcout << e.what() << std::endl;
