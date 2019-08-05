@@ -1,3 +1,11 @@
+// https://sourceforge.net/p/mingw-w64/wiki2/Unicode%20apps/
+#ifndef _UNICODE
+#define _UNICODE
+#endif
+#ifndef UNICODE
+#define UNICODE
+#endif
+
 #include <boost/program_options.hpp>
 #include <iostream>
 #include <stdio.h>
@@ -6,10 +14,14 @@
 
 namespace bpo = boost::program_options;
 
-int main(int argc, char** argv)
+extern "C" int wmain(int argc, wchar_t** argv)
 {
     try {
         initLocalization();
+
+        // Running Examples under Microsoft Windows
+        // https://www.boost.org/doc/libs/1_69_0/libs/locale/doc/html/running_examples_under_windows.html
+        std::wcout << argc << ' ' << argv[0] << ' ' << (argc >= 2 ? argv[1] : L"") << std::endl;
 
         bpo::options_description hiddenOptions("Hidden options");
         hiddenOptions.add_options() //
@@ -34,7 +46,7 @@ int main(int argc, char** argv)
         positionalOptions.add("file-name", 1).add("table-name", 2);
 
         bpo::variables_map variablesMap;
-        store(bpo::command_line_parser(argc, argv).options(commandLineOptions).positional(positionalOptions).run(), variablesMap);
+        store(bpo::wcommand_line_parser(argc, argv).options(commandLineOptions).positional(positionalOptions).run(), variablesMap);
         notify(variablesMap);
 
         if (variablesMap.count("help") || (!variablesMap.count("file-name"))) {
@@ -45,6 +57,10 @@ int main(int argc, char** argv)
                          "COPY INTO SQL commands. The first line of the file FILE must contain names of the columns.\n\n";
             std::cout << visibleOptions << std::endl;
             return 0;
+        }
+
+        if (variablesMap.count("file-name")) {
+            std::wcout << L"Scanning " << variablesMap["file-name"].as<std::wstring>() << std::endl;
         }
     } catch (const std::exception& e) {
         std::cout << e.what() << std::endl;

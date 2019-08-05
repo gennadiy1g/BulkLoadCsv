@@ -20,7 +20,7 @@
         <IncludePath Value="."/>
         <IncludePath Value="../CsvFileParser"/>
       </Compiler>
-      <Linker Options="">
+      <Linker Options="-municode">
         <LibraryPath Value="."/>
         <Library Value="libboost_program_options.a"/>
         <Library Value="libboost_log_setup.a"/>
