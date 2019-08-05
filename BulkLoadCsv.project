@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Project Name="BulkLoadCsv" Version="10.0.0" InternalType="Console">
+  <VirtualDirectory Name="nanodbc">
+    <File Name="../nanodbc-2.12.4/src/nanodbc.h"/>
+    <File Name="../nanodbc-2.12.4/src/nanodbc.cpp"/>
+  </VirtualDirectory>
   <Plugins>
     <Plugin Name="qmake">
       <![CDATA[00010001N0005Debug000000000000]]>
@@ -8,6 +12,13 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
+    <File Name="../CsvFileParser/MonetDBBulkLoader.h"/>
+    <File Name="../CsvFileParser/MonetDBBulkLoader.cpp"/>
+    <File Name="../CsvFileParser/log.h"/>
+    <File Name="../CsvFileParser/CsvFileParser.h"/>
+    <File Name="../CsvFileParser/CsvFileParser.cpp"/>
+    <File Name="../CsvFileParser/BulkLoader.h"/>
+    <File Name="../CsvFileParser/BulkLoader.cpp"/>
     <File Name="../CsvFileParser/utilities.h"/>
     <File Name="../CsvFileParser/utilities.cpp"/>
     <File Name="main.cpp"/>
@@ -19,6 +30,10 @@
       <Compiler Options="-std=c++17" C_Options="" Assembler="">
         <IncludePath Value="."/>
         <IncludePath Value="../CsvFileParser"/>
+        <IncludePath Value="../nanodbc-2.12.4/src"/>
+        <Preprocessor Value="NANODBC_ENABLE_BOOST"/>
+        <Preprocessor Value="NANODBC_ENABLE_UNICODE"/>
+        <Preprocessor Value="NANODBC_USE_UNICODE"/>
       </Compiler>
       <Linker Options="-municode">
         <LibraryPath Value="."/>
