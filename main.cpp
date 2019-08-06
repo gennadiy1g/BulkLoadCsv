@@ -63,21 +63,21 @@ extern "C" int wmain(int argc, wchar_t** argv)
         } else {
             std::wcout << "Scanning " << variablesMap["file-name"].as<std::wstring>() << std::endl;
             MonetDBBulkLoader bulkLoader(variablesMap["file-name"].as<std::wstring>());
+
+            std::vector<ConnectionParameter> connectionParameters;
             if (variablesMap.count("port") && !variablesMap["port"].defaulted()) {
-                std::vector<ConnectionParameter> connectionParameters;
                 connectionParameters.push_back(std::make_pair(L"PORT", std::to_wstring(variablesMap["port"].as<int>())));
-                bulkLoader.setConnectionParameters(connectionParameters);
             }
             if (variablesMap.count("uid") && !variablesMap["uid"].defaulted()) {
-                std::vector<ConnectionParameter> connectionParameters;
                 connectionParameters.push_back(std::make_pair(L"UID", variablesMap["uid"].as<std::wstring>()));
-                bulkLoader.setConnectionParameters(connectionParameters);
             }
             if (variablesMap.count("pwd") && !variablesMap["pwd"].defaulted()) {
-                std::vector<ConnectionParameter> connectionParameters;
                 connectionParameters.push_back(std::make_pair(L"PWD", variablesMap["pwd"].as<std::wstring>()));
+            }
+            if (connectionParameters.size()) {
                 bulkLoader.setConnectionParameters(connectionParameters);
             }
+
             bulkLoader.parse(variablesMap["separator"].as<std::wstring>()[0], variablesMap["quote"].as<std::wstring>()[0]);
             auto rejectedRecords = bulkLoader.load(variablesMap["table-name"].as<std::wstring>());
             if (rejectedRecords.value_or(0) > 0) {
