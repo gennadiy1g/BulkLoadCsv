@@ -53,11 +53,11 @@ extern "C" int wmain(int argc, wchar_t** argv)
         notify(variablesMap);
 
         if (variablesMap.count("help") || (!variablesMap.count("file-name"))) {
-            std::wcout << "Usage: BulkLoadCsv [OPTION]... FILE [TABLE]\n\n"
-                          "Bulk load a delimited text file FILE into a table TABLE in a MonetDB database.\n\n"
-                          "Scan the delimited text file FILE and detect data types, lengths and NULL (NOT NULL)\n"
-                          "constraints of the columns. Then generate and execute DROP TABLE, CREATE TABLE and \n"
-                          "COPY INTO SQL commands. The first line of the file FILE must contain names of the columns.\n\n";
+            std::cout << "Usage: BulkLoadCsv [OPTION]... FILE [TABLE]\n\n"
+                         "Bulk load a delimited text file FILE into a table TABLE in a MonetDB database.\n\n"
+                         "Scan the delimited text file FILE and detect data types, lengths and NULL (NOT NULL)\n"
+                         "constraints of the columns. Then generate and execute DROP TABLE, CREATE TABLE and \n"
+                         "COPY INTO SQL commands. The first line of the file FILE must contain names of the columns.\n\n";
             std::cout << visibleOptions << std::endl;
             return 0;
         } else {
@@ -72,7 +72,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
             }
         }
     } catch (const std::exception& e) {
-        std::wcout << e.what() << std::endl;
+        std::cout << e.what() << std::endl;
         return 1;
     }
     return 0;
