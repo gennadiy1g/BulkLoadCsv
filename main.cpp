@@ -68,7 +68,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
             bulkLoader.parse(variablesMap["separator"].as<std::wstring>()[0], variablesMap["quote"].as<std::wstring>()[0]);
             auto rejectedRecords = bulkLoader.load(variablesMap["table-name"].as<std::wstring>());
             if (rejectedRecords.value_or(0) > 0) {
-                std::wcout << "Rejected " << rejectedRecords.value() << " records.";
+                std::cout << "Rejected " << rejectedRecords.value() << " records.";
             }
         }
     } catch (const std::exception& e) {
