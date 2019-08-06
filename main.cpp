@@ -19,12 +19,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
 {
     try {
         initLocalization();
-
         initLogging();
-
-        // Running Examples under Microsoft Windows
-        // https://www.boost.org/doc/libs/1_69_0/libs/locale/doc/html/running_examples_under_windows.html
-        std::wcout << argc << ' ' << argv[0] << ' ' << (argc >= 2 ? argv[1] : L"") << ' ' << (argc >= 3 ? argv[2] : L"") << std::endl;
 
         bpo::options_description hiddenOptions("Hidden options");
         hiddenOptions.add_options() //
@@ -61,6 +56,8 @@ extern "C" int wmain(int argc, wchar_t** argv)
             std::cout << visibleOptions << std::endl;
             return 0;
         } else {
+            // Running Examples under Microsoft Windows
+            // https://www.boost.org/doc/libs/1_69_0/libs/locale/doc/html/running_examples_under_windows.html
             std::wcout << "Scanning " << variablesMap["file-name"].as<std::wstring>() << std::endl;
             MonetDBBulkLoader bulkLoader(variablesMap["file-name"].as<std::wstring>());
 
