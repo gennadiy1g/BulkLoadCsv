@@ -62,7 +62,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
             return 0;
         } else {
             if (variablesMap.count("file-name")) {
-                std::wcout << L"Scanning " << variablesMap["file-name"].as<std::wstring>() << std::endl;
+                std::wcout << "Scanning " << variablesMap["file-name"].as<std::wstring>() << std::endl;
             }
             MonetDBBulkLoader bulkLoader(variablesMap["file-name"].as<std::wstring>());
             bulkLoader.parse(variablesMap["separator"].as<std::wstring>()[0], variablesMap["quote"].as<std::wstring>()[0]);
