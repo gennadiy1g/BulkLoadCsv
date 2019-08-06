@@ -61,9 +61,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
             std::cout << visibleOptions << std::endl;
             return 0;
         } else {
-            if (variablesMap.count("file-name")) {
-                std::wcout << "Scanning " << variablesMap["file-name"].as<std::wstring>() << std::endl;
-            }
+            std::wcout << "Scanning " << variablesMap["file-name"].as<std::wstring>() << std::endl;
             MonetDBBulkLoader bulkLoader(variablesMap["file-name"].as<std::wstring>());
             bulkLoader.parse(variablesMap["separator"].as<std::wstring>()[0], variablesMap["quote"].as<std::wstring>()[0]);
             auto rejectedRecords = bulkLoader.load(variablesMap["table-name"].as<std::wstring>());
