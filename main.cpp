@@ -55,7 +55,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
                          "constraints of the columns. Then generate and execute DROP TABLE, CREATE TABLE and \n"
                          "COPY INTO SQL commands. The first line of the file FILE must contain names of the columns.\n\n";
             std::cout << visibleOptions << std::endl;
-            return 0;
+            return EXIT_SUCCESS;
         } else {
             // Running Examples under Microsoft Windows
             // https://www.boost.org/doc/libs/1_69_0/libs/locale/doc/html/running_examples_under_windows.html
@@ -86,7 +86,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
         }
     } catch (const std::exception& e) {
         std::cout << e.what() << std::endl;
-        return 1;
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
