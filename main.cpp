@@ -42,7 +42,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
         commandLineOptions.add(visibleOptions).add(hiddenOptions);
 
         bpo::positional_options_description positionalOptions;
-        positionalOptions.add("file-name", 1).add("table-name", 2);
+        positionalOptions.add("file-name", 1).add("table-name", 1);
 
         bpo::variables_map variablesMap;
         store(bpo::wcommand_line_parser(argc, argv).options(commandLineOptions).positional(positionalOptions).run(), variablesMap);
