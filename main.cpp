@@ -30,7 +30,9 @@ extern "C" int wmain(int argc, wchar_t** argv)
         visibleOptions.add_options() //
             ("help,?", "Print usage information and exit.") //
             ("separator,S", bpo::wvalue<wchar_t>()->default_value(L',', ","), "Field separator character.") //
+            ("separator_unicode", bpo::wvalue<std::wstring>(), "Field separator character, Unicode code point.") //
             ("quote,Q", bpo::wvalue<wchar_t>()->default_value(L'"', "\""), "String quote character.") //
+            ("quote_unicode", bpo::wvalue<std::wstring>(), "String quote character, Unicode code point.") //
             ("port,P", bpo::value<int>()->default_value(50000), "Port number of the server.") //
             ("uid,U", bpo::wvalue<std::wstring>()->default_value(L"monetdb", "monetdb"), "User to connect as.") //
             ("pwd", bpo::wvalue<std::wstring>()->default_value(L"monetdb", "monetdb"), "Password.") //
