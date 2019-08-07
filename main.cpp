@@ -29,9 +29,9 @@ extern "C" int wmain(int argc, wchar_t** argv)
         bpo::options_description visibleOptions("Allowed options");
         visibleOptions.add_options() //
             ("help,?", "Print usage information and exit.") //
-            ("separator,S", bpo::wvalue<std::wstring>()->default_value(L",", ","), "Field separator character.") //
+            ("separator,S", bpo::wvalue<wchar_t>()->default_value(L',', ","), "Field separator character.") //
             ("foo,F", bpo::wvalue<wchar_t>()->default_value(L',', ","), "Field separator character.") //
-            ("quote,Q", bpo::wvalue<std::wstring>()->default_value(L"\"", "\""), "String quote character.") //
+            ("quote,Q", bpo::wvalue<wchar_t>()->default_value(L'"', "\""), "String quote character.") //
             ("port,P", bpo::value<int>()->default_value(50000), "Port number of the server.") //
             ("uid,U", bpo::wvalue<std::wstring>()->default_value(L"monetdb", "monetdb"), "User to connect as.") //
             ("pwd", bpo::wvalue<std::wstring>()->default_value(L"monetdb", "monetdb"), "Password.") //
@@ -78,7 +78,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
 
             std::wcout << "foo = '" << variablesMap["foo"].as<wchar_t>() << "'\n";
 
-            bulkLoader.parse(variablesMap["separator"].as<std::wstring>()[0], variablesMap["quote"].as<std::wstring>()[0]);
+            bulkLoader.parse(variablesMap["separator"].as<wchar_t>(), variablesMap["quote"].as<wchar_t>());
             auto rejectedRecords = bulkLoader.load(variablesMap["table-name"].as<std::wstring>());
             if (rejectedRecords.value_or(0) > 0) {
                 std::cout << "Rejected " << rejectedRecords.value() << " records.";
