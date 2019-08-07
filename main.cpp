@@ -8,7 +8,6 @@
 
 #include <boost/program_options.hpp>
 #include <iostream>
-#include <stdio.h>
 
 #include "MonetDBBulkLoader.h"
 #include "utilities.h"
