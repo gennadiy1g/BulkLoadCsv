@@ -14,6 +14,15 @@
 
 namespace bpo = boost::program_options;
 
+// Function used to check that 'opt1' and 'opt2' are not specified at the same time.
+void conflictingOptions(const bpo::variables_map& variablesMap,
+    const char* opt1, const char* opt2)
+{
+    if (variablesMap.count(opt1) && !variablesMap[opt1].defaulted()
+        && variablesMap.count(opt2) && !variablesMap[opt2].defaulted())
+        throw std::logic_error("Conflicting options '"s + opt1 + "' and '"s + opt2 + "'."s);
+}
+
 extern "C" int wmain(int argc, wchar_t** argv)
 {
     try {
@@ -57,6 +66,10 @@ extern "C" int wmain(int argc, wchar_t** argv)
             std::cout << visibleOptions << std::endl;
             return EXIT_SUCCESS;
         } else {
+
+            conflictingOptions(variablesMap, "separator", "separator_unicode");
+            conflictingOptions(variablesMap, "quote", "quote_unicode");
+
             // Running Examples under Microsoft Windows
             // https://www.boost.org/doc/libs/1_69_0/libs/locale/doc/html/running_examples_under_windows.html
             std::wcout << "Scanning " << variablesMap["file-name"].as<std::wstring>() << std::endl;
