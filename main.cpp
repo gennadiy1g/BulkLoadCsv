@@ -105,7 +105,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
 
             auto rejectedRecords = bulkLoader.load(variablesMap["table-name"].as<std::wstring>());
             if (rejectedRecords.value_or(0) > 0) {
-                std::cout << "Rejected " << rejectedRecords.value() << " records.";
+                std::cout << "Sever rejected " << rejectedRecords.value() << " records.";
             }
         }
     } catch (const std::exception& e) {
