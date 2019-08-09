@@ -90,7 +90,19 @@ extern "C" int wmain(int argc, wchar_t** argv)
                 bulkLoader.setConnectionParameters(connectionParameters);
             }
 
-            bulkLoader.parse(variablesMap["separator"].as<wchar_t>(), variablesMap["quote"].as<wchar_t>());
+            wchar_t separator, quote;
+            if (variablesMap.count("separator_unicode")) {
+                separator = std::stol(variablesMap["separator_unicode"].as<std::wstring>(), nullptr, 0);
+            } else {
+                separator = variablesMap["separator"].as<wchar_t>();
+            }
+            if (variablesMap.count("quote_unicode")) {
+                quote = std::stol(variablesMap["quote_unicode"].as<std::wstring>(), nullptr, 0);
+            } else {
+                quote = variablesMap["quote"].as<wchar_t>();
+            }
+            bulkLoader.parse(separator, quote);
+
             auto rejectedRecords = bulkLoader.load(variablesMap["table-name"].as<std::wstring>());
             if (rejectedRecords.value_or(0) > 0) {
                 std::cout << "Rejected " << rejectedRecords.value() << " records.";
