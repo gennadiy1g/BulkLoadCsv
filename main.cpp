@@ -28,6 +28,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
     try {
         initLocalization();
         initLogging();
+        ColumnInfo::initializeLocales();
 
         bpo::options_description hiddenOptions("Hidden options");
         hiddenOptions.add_options() //
