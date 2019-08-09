@@ -103,9 +103,20 @@ extern "C" int wmain(int argc, wchar_t** argv)
             }
             bulkLoader.parse(separator, quote);
 
-            auto rejectedRecords = bulkLoader.load(variablesMap["table-name"].as<std::wstring>());
-            if (rejectedRecords.value_or(0) > 0) {
-                std::cout << "Sever rejected " << rejectedRecords.value() << " records.";
+            if (variablesMap.count("dry-run") || variablesMap.count("print-sql")) {
+                auto tableName { bulkLoader.getTableName(variablesMap["table-name"].as<std::wstring>()) };
+                auto dropCommand { bulkLoader.generateDropTableCommand(tableName) };
+                std::wcout << dropCommand << ";\n";
+                auto createCommand { bulkLoader.generateCreateTableCommand(tableName) };
+                std::wcout << createCommand << ";\n";
+                auto copyCommand { bulkLoader.generateCopyIntoCommand(tableName) };
+                std::wcout << copyCommand << ";\n";
+            }
+            if (!variablesMap.count("dry-run")) {
+                auto rejectedRecords = bulkLoader.load(variablesMap["table-name"].as<std::wstring>());
+                if (rejectedRecords.value_or(0) > 0) {
+                    std::cout << "Sever rejected " << rejectedRecords.value() << " records.";
+                }
             }
         }
     } catch (const std::exception& e) {
