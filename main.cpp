@@ -72,9 +72,6 @@ extern "C" int wmain(int argc, wchar_t** argv)
             conflictingOptions(variablesMap, "separator", "separator_unicode");
             conflictingOptions(variablesMap, "quote", "quote_unicode");
 
-            // Running Examples under Microsoft Windows
-            // https://www.boost.org/doc/libs/1_69_0/libs/locale/doc/html/running_examples_under_windows.html
-            std::wcout << "Scanning " << variablesMap["file-name"].as<std::wstring>() << std::endl;
             MonetDBBulkLoader bulkLoader(variablesMap["file-name"].as<std::wstring>());
 
             std::vector<ConnectionParameter> connectionParameters;
@@ -109,6 +106,9 @@ extern "C" int wmain(int argc, wchar_t** argv)
                 throw std::invalid_argument("The same character cannot be used as both: a field_separator and a string_quote!");
             }
 
+            // Running Examples under Microsoft Windows
+            // https://www.boost.org/doc/libs/1_69_0/libs/locale/doc/html/running_examples_under_windows.html
+            std::wcout << "Scanning " << variablesMap["file-name"].as<std::wstring>() << std::endl;
             bulkLoader.parse(separator, quote);
 
             if (variablesMap.count("dry-run") || variablesMap.count("print-sql")) {
