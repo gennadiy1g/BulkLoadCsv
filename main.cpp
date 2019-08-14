@@ -126,7 +126,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
             if (!variablesMap.count("dry-run")) {
                 auto rejectedRecords = bulkLoader.load(variablesMap["table-name"].as<std::wstring>());
                 if (rejectedRecords.value_or(0) > 0) {
-                    std::cout << "Sever rejected " << rejectedRecords.value() << " records." << std::endl;
+                    std::cout << "Sever rejected " << rejectedRecords.value() << " records" << std::endl;
                 }
             }
         }
