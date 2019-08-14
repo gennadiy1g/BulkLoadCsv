@@ -105,6 +105,9 @@ extern "C" int wmain(int argc, wchar_t** argv)
             if ((separator == L'\\') || (quote == L'\\')) {
                 throw std::invalid_argument("Backslash character ('\\' or 0x5c in ASCII encoding) is a reserved character, and cannot be used as a field_separator or a string_quote!");
             }
+            if (separator == quote) {
+                throw std::invalid_argument("The same character cannot be used as both: a field_separator and a string_quote!");
+            }
 
             bulkLoader.parse(separator, quote);
 
