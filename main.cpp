@@ -110,6 +110,9 @@ extern "C" int wmain(int argc, wchar_t** argv)
             // https://www.boost.org/doc/libs/1_69_0/libs/locale/doc/html/running_examples_under_windows.html
             std::wcout << "Scanning " << variablesMap["file-name"].as<std::wstring>() << std::endl;
             bulkLoader.parse(separator, quote);
+            std::cout << bulkLoader.parsingResults().numLines() << " lines, "
+                      << bulkLoader.parsingResults().numMalformedLines() << " malformed lines, "
+                      << bulkLoader.parsingResults().columns().size() << " columns" << std::endl;
 
             if (variablesMap.count("dry-run") || variablesMap.count("print-sql")) {
                 auto tableName { bulkLoader.getTableName(variablesMap["table-name"].as<std::wstring>()) };
