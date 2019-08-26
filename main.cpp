@@ -6,6 +6,7 @@
 #define UNICODE
 #endif
 
+#include <boost/asio.hpp>
 #include <boost/program_options.hpp>
 #include <iostream>
 
@@ -74,7 +75,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
             conflictingOptions(variablesMap, "quote", "quote_unicode");
 
             auto factoryLambda = [&variablesMap]() -> MonetDBBulkLoader {
-                if (variablesMap.count("host") && !variablesMap["host"].defaulted()) {
+                if (variablesMap.count("host") && !variablesMap["host"].defaulted() && variablesMap["host"].as<std::string>() != boost::asio::ip::host_name()) {
                     return MclientMonetDBBulkLoader(variablesMap["file-name"].as<std::wstring>());
                 } else {
                     return NanodbcMonetDBBulkLoader(variablesMap["file-name"].as<std::wstring>());
