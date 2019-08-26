@@ -42,6 +42,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
             ("separator_unicode", bpo::wvalue<std::wstring>(), "Field separator character, Unicode code point.") //
             ("quote,Q", bpo::wvalue<wchar_t>()->default_value(L'"', "\""), "String quote character.") //
             ("quote_unicode", bpo::wvalue<std::wstring>(), "String quote character, Unicode code point.") //
+            ("host,H", bpo::wvalue<std::string>()->default_value("localhost"), "Name of the host on which the server runs.") //
             ("port,P", bpo::value<int>()->default_value(50000), "Port number of the server.") //
             ("uid,U", bpo::wvalue<std::wstring>()->default_value(L"monetdb", "monetdb"), "User to connect as.") //
             ("pwd", bpo::wvalue<std::wstring>()->default_value(L"monetdb", "monetdb"), "Password.") //
@@ -72,7 +73,15 @@ extern "C" int wmain(int argc, wchar_t** argv)
             conflictingOptions(variablesMap, "separator", "separator_unicode");
             conflictingOptions(variablesMap, "quote", "quote_unicode");
 
-            MonetDBBulkLoader bulkLoader(variablesMap["file-name"].as<std::wstring>());
+            auto factoryLambda = [&variablesMap]() -> MonetDBBulkLoader {
+                if (variablesMap.count("host") && !variablesMap["host"].defaulted()) {
+                    return MclientMonetDBBulkLoader(variablesMap["file-name"].as<std::wstring>());
+                } else {
+                    return NanodbcMonetDBBulkLoader(variablesMap["file-name"].as<std::wstring>());
+                }
+            };
+
+            MonetDBBulkLoader bulkLoader = factoryLambda();
 
             std::vector<ConnectionParameter> connectionParameters;
             if (variablesMap.count("port") && !variablesMap["port"].defaulted()) {
