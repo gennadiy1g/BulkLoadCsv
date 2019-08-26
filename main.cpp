@@ -46,7 +46,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
             ("separator_unicode", bpo::wvalue<std::wstring>(), "Field separator character, Unicode code point.") //
             ("quote,Q", bpo::wvalue<wchar_t>()->default_value(L'"', "\""), "String quote character.") //
             ("quote_unicode", bpo::wvalue<std::wstring>(), "String quote character, Unicode code point.") //
-            ("host,H", bpo::wvalue<std::string>()->default_value("localhost"), "Name of the host on which the server runs.") //
+            ("host,H", bpo::wvalue<std::string>()->default_value("localhost"), "Name of the host on which the server runs (requires Apr2019 release (11.33.3) of MonetDB).") //
             ("port,P", bpo::value<int>()->default_value(50000), "Port number of the server.") //
             ("uid,U", bpo::wvalue<std::wstring>()->default_value(L"monetdb", "monetdb"), "User to connect as.") //
             ("pwd", bpo::wvalue<std::wstring>()->default_value(L"monetdb", "monetdb"), "Password.") //
