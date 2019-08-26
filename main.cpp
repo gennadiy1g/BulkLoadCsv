@@ -6,6 +6,7 @@
 #define UNICODE
 #endif
 
+#include <boost/algorithm/string.hpp>
 #include <boost/asio.hpp>
 #include <boost/program_options.hpp>
 #include <iostream>
@@ -14,6 +15,8 @@
 #include "utilities.h"
 
 namespace bpo = boost::program_options;
+
+using namespace std::literals;
 
 // Function used to check that 'opt1' and 'opt2' are not specified at the same time.
 void conflictingOptions(const bpo::variables_map& variablesMap,
@@ -75,7 +78,10 @@ extern "C" int wmain(int argc, wchar_t** argv)
             conflictingOptions(variablesMap, "quote", "quote_unicode");
 
             auto factoryLambda = [&variablesMap]() -> MonetDBBulkLoader {
-                if (variablesMap.count("host") && !variablesMap["host"].defaulted() && variablesMap["host"].as<std::string>() != boost::asio::ip::host_name()) {
+                auto host = variablesMap["host"].as<std::string>();
+                boost::trim(host);
+                if (variablesMap.count("host") && !variablesMap["host"].defaulted()
+                    && !boost::is_iequal()(host, boost::asio::ip::host_name()) && (host != "127.0.0.1"s) && !boost::is_iequal()(host, "localhost"s)) {
                     return MclientMonetDBBulkLoader(variablesMap["file-name"].as<std::wstring>());
                 } else {
                     return NanodbcMonetDBBulkLoader(variablesMap["file-name"].as<std::wstring>());
