@@ -13,6 +13,7 @@
 #include <iostream>
 
 #include "MonetDBBulkLoader.h"
+#include "log.h"
 #include "utilities.h"
 
 namespace bpo = boost::program_options;
@@ -30,9 +31,12 @@ void conflictingOptions(const bpo::variables_map& variablesMap,
 
 extern "C" int wmain(int argc, wchar_t** argv)
 {
+    bool loggingInitialized { false };
+
     try {
         initLocalization();
         initLogging();
+        loggingInitialized = true;
         ColumnInfo::initializeLocales();
 
         bpo::options_description hiddenOptions("Hidden options");
@@ -149,6 +153,12 @@ extern "C" int wmain(int argc, wchar_t** argv)
         }
     } catch (const std::exception& e) {
         std::cout << e.what() << std::endl;
+
+        if (loggingInitialized) {
+            auto& gLogger = GlobalLogger::get();
+            BOOST_LOG_SEV(gLogger, bltrivial::fatal) << e.what();
+        }
+
         return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;
