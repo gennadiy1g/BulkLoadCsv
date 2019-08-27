@@ -8,6 +8,7 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/asio.hpp>
+#include <boost/locale.hpp>
 #include <boost/program_options.hpp>
 #include <iostream>
 
@@ -46,7 +47,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
             ("separator_unicode", bpo::wvalue<std::wstring>(), "Field separator character, Unicode code point.") //
             ("quote,Q", bpo::wvalue<wchar_t>()->default_value(L'"', "\""), "String quote character.") //
             ("quote_unicode", bpo::wvalue<std::wstring>(), "String quote character, Unicode code point.") //
-            ("host,H", bpo::wvalue<std::string>()->default_value("localhost"), "Name of the host on which the server runs (requires Apr2019 release (11.33.3) of MonetDB).") //
+            ("host,H", bpo::wvalue<std::wstring>()->default_value(L"localhost", "localhost"), "Name of the host on which the server runs (requires Apr2019 release (11.33.3) of MonetDB).") //
             ("port,P", bpo::value<int>()->default_value(50000), "Port number of the server.") //
             ("uid,U", bpo::wvalue<std::wstring>()->default_value(L"monetdb", "monetdb"), "User to connect as.") //
             ("pwd", bpo::wvalue<std::wstring>()->default_value(L"monetdb", "monetdb"), "Password.") //
@@ -78,7 +79,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
             conflictingOptions(variablesMap, "quote", "quote_unicode");
 
             auto factoryLambda = [&variablesMap]() -> MonetDBBulkLoader {
-                auto host = variablesMap["host"].as<std::string>();
+                auto host = boost::locale::conv::utf_to_utf<char>(variablesMap["host"].as<std::wstring>());
                 boost::trim(host);
                 if (variablesMap.count("host") && !variablesMap["host"].defaulted()
                     && !boost::is_iequal()(host, boost::asio::ip::host_name()) && (host != "127.0.0.1"s) && !boost::is_iequal()(host, "localhost"s)) {
