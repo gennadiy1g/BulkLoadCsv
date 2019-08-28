@@ -97,13 +97,13 @@ extern "C" int wmain(int argc, wchar_t** argv)
 
             std::vector<ConnectionParameter> connectionParameters;
             if (variablesMap.count("port") && !variablesMap["port"].defaulted()) {
-                connectionParameters.push_back(std::make_pair(L"PORT", std::to_wstring(variablesMap["port"].as<int>())));
+                connectionParameters.push_back(std::make_pair(ConnectionParameterName::Port, std::to_wstring(variablesMap["port"].as<int>())));
             }
             if (variablesMap.count("uid") && !variablesMap["uid"].defaulted()) {
-                connectionParameters.push_back(std::make_pair(L"UID", variablesMap["uid"].as<std::wstring>()));
+                connectionParameters.push_back(std::make_pair(ConnectionParameterName::User, variablesMap["uid"].as<std::wstring>()));
             }
             if (variablesMap.count("pwd") && !variablesMap["pwd"].defaulted()) {
-                connectionParameters.push_back(std::make_pair(L"PWD", variablesMap["pwd"].as<std::wstring>()));
+                connectionParameters.push_back(std::make_pair(ConnectionParameterName::Password, variablesMap["pwd"].as<std::wstring>()));
             }
             if (connectionParameters.size()) {
                 bulkLoader.setConnectionParameters(connectionParameters);
