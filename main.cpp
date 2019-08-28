@@ -11,6 +11,7 @@
 #include <boost/locale.hpp>
 #include <boost/program_options.hpp>
 #include <iostream>
+#include <memory>
 
 #include "MonetDBBulkLoader.h"
 #include "log.h"
@@ -82,18 +83,18 @@ extern "C" int wmain(int argc, wchar_t** argv)
             conflictingOptions(variablesMap, "separator", "separator_unicode");
             conflictingOptions(variablesMap, "quote", "quote_unicode");
 
-            auto factoryLambda = [&variablesMap]() -> MonetDBBulkLoader {
+            auto factoryLambda = [&variablesMap]() -> std::unique_ptr<MonetDBBulkLoader> const {
                 auto host = boost::locale::conv::utf_to_utf<char>(variablesMap["host"].as<std::wstring>());
                 boost::trim(host);
                 if (variablesMap.count("host") && !variablesMap["host"].defaulted()
                     && !boost::is_iequal()(host, boost::asio::ip::host_name()) && (host != "127.0.0.1"s) && !boost::is_iequal()(host, "localhost"s)) {
-                    return MclientMonetDBBulkLoader(variablesMap["file-name"].as<std::wstring>());
+                    return std::make_unique<MclientMonetDBBulkLoader>(variablesMap["file-name"].as<std::wstring>());
                 } else {
-                    return NanodbcMonetDBBulkLoader(variablesMap["file-name"].as<std::wstring>());
+                    return std::make_unique<NanodbcMonetDBBulkLoader>(variablesMap["file-name"].as<std::wstring>());
                 }
             };
 
-            MonetDBBulkLoader bulkLoader = factoryLambda();
+            auto bulkLoader = factoryLambda();
 
             std::vector<ConnectionParameter> connectionParameters;
             if (variablesMap.count("port") && !variablesMap["port"].defaulted()) {
@@ -106,7 +107,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
                 connectionParameters.push_back(std::make_pair(ConnectionParameterName::Password, variablesMap["pwd"].as<std::wstring>()));
             }
             if (connectionParameters.size()) {
-                bulkLoader.setConnectionParameters(connectionParameters);
+                bulkLoader->setConnectionParameters(connectionParameters);
             }
 
             wchar_t separator, quote;
@@ -130,22 +131,22 @@ extern "C" int wmain(int argc, wchar_t** argv)
             // Running Examples under Microsoft Windows
             // https://www.boost.org/doc/libs/1_69_0/libs/locale/doc/html/running_examples_under_windows.html
             std::wcout << "Scanning " << variablesMap["file-name"].as<std::wstring>() << std::endl;
-            bulkLoader.parse(separator, quote);
-            std::cout << bulkLoader.parsingResults().numLines() << " lines, "
-                      << bulkLoader.parsingResults().numMalformedLines() << " malformed lines, "
-                      << bulkLoader.parsingResults().columns().size() << " columns" << std::endl;
+            bulkLoader->parse(separator, quote);
+            std::cout << bulkLoader->parsingResults().numLines() << " lines, "
+                      << bulkLoader->parsingResults().numMalformedLines() << " malformed lines, "
+                      << bulkLoader->parsingResults().columns().size() << " columns" << std::endl;
 
             if (variablesMap.count("dry-run") || variablesMap.count("print-sql")) {
-                auto tableName { bulkLoader.getTableName(variablesMap["table-name"].as<std::wstring>()) };
-                auto dropCommand { bulkLoader.generateDropTableCommand(tableName) };
+                auto tableName { bulkLoader->getTableName(variablesMap["table-name"].as<std::wstring>()) };
+                auto dropCommand { bulkLoader->generateDropTableCommand(tableName) };
                 std::wcout << dropCommand << ";\n";
-                auto createCommand { bulkLoader.generateCreateTableCommand(tableName) };
+                auto createCommand { bulkLoader->generateCreateTableCommand(tableName) };
                 std::wcout << createCommand << ";\n";
-                auto copyCommand { bulkLoader.generateCopyIntoCommand(tableName) };
+                auto copyCommand { bulkLoader->generateCopyIntoCommand(tableName) };
                 std::wcout << copyCommand << ";" << std::endl;
             }
             if (!variablesMap.count("dry-run")) {
-                auto rejectedRecords = bulkLoader.load(variablesMap["table-name"].as<std::wstring>());
+                auto rejectedRecords = bulkLoader->load(variablesMap["table-name"].as<std::wstring>());
                 if (rejectedRecords.value_or(0) > 0) {
                     std::cout << "Sever rejected " << rejectedRecords.value() << " records" << std::endl;
                 }
