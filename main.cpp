@@ -83,7 +83,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
             conflictingOptions(variablesMap, "separator", "separator_unicode");
             conflictingOptions(variablesMap, "quote", "quote_unicode");
 
-            auto factoryLambda = [&variablesMap]() -> std::unique_ptr<MonetDBBulkLoader> const {
+            auto factoryLambda = [&variablesMap]() -> std::unique_ptr<BulkLoader> const {
                 auto host = boost::locale::conv::utf_to_utf<char>(variablesMap["host"].as<std::wstring>());
                 boost::trim(host);
                 if (variablesMap.count("host") && !variablesMap["host"].defaulted()
