@@ -52,7 +52,8 @@ extern "C" int wmain(int argc, wchar_t** argv)
             ("separator_unicode", bpo::wvalue<std::wstring>(), "Field separator character, Unicode code point.") //
             ("quote,Q", bpo::wvalue<wchar_t>()->default_value(L'"', "\""), "String quote character.") //
             ("quote_unicode", bpo::wvalue<std::wstring>(), "String quote character, Unicode code point.") //
-            ("host,H", bpo::wvalue<std::wstring>()->default_value(L"localhost", "localhost"), "Name of the host on which the server runs (requires Apr2019 release (11.33.3) of MonetDB).") //
+            ("host,H", bpo::wvalue<std::wstring>()->default_value(L"localhost", "localhost"), "Name of the host on which the server runs"
+                                                                                              " (requires Apr2019 release (11.33.3) of MonetDB).") //
             ("port,P", bpo::value<int>()->default_value(50000), "Port number of the server.") //
             ("uid,U", bpo::wvalue<std::wstring>()->default_value(L"monetdb", "monetdb"), "User to connect as.") //
             ("pwd", bpo::wvalue<std::wstring>()->default_value(L"monetdb", "monetdb"), "Password.") //
@@ -79,7 +80,6 @@ extern "C" int wmain(int argc, wchar_t** argv)
             std::cout << visibleOptions << std::endl;
             return EXIT_SUCCESS;
         } else {
-
             conflictingOptions(variablesMap, "separator", "separator_unicode");
             conflictingOptions(variablesMap, "quote", "quote_unicode");
 
@@ -122,7 +122,8 @@ extern "C" int wmain(int argc, wchar_t** argv)
                 quote = variablesMap["quote"].as<wchar_t>();
             }
             if ((separator == L'\\') || (quote == L'\\')) {
-                throw std::invalid_argument("Backslash character ('\\' or 0x5c in ASCII encoding) is a reserved character, and cannot be used as a field_separator or a string_quote!");
+                throw std::invalid_argument("Backslash character ('\\' or 0x5c in ASCII encoding) is a reserved character, and cannot be used"
+                                            " as a field_separator or a string_quote!");
             }
             if (separator == quote) {
                 throw std::invalid_argument("The same character cannot be used as both: a field_separator and a string_quote!");
