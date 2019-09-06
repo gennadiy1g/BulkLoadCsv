@@ -55,8 +55,8 @@ extern "C" int wmain(int argc, wchar_t** argv)
             ("host,H", bpo::wvalue<std::wstring>()->default_value(L"localhost", "localhost"), "Name of the host on which the server runs"
                                                                                               " (requires Apr2019 release (11.33.3) of MonetDB).") //
             ("port,P", bpo::value<int>()->default_value(50000), "Port number of the server.") //
-            ("uid,U", bpo::wvalue<std::wstring>()->default_value(L"monetdb", "monetdb"), "User to connect as.") //
-            ("pwd", bpo::wvalue<std::wstring>()->default_value(L"monetdb", "monetdb"), "Password.") //
+            ("uid,U", bpo::wvalue<std::wstring>()->default_value(MonetDBBulkLoader::DefaultUserPassword, blocale::conv::utf_to_utf<char>(MonetDBBulkLoader::DefaultUserPassword)), "User to connect as.") //
+            ("pwd", bpo::wvalue<std::wstring>()->default_value(MonetDBBulkLoader::DefaultUserPassword, blocale::conv::utf_to_utf<char>(MonetDBBulkLoader::DefaultUserPassword)), "Password.") //
             ("print-sql", "Scan the file and print the generated SQL commands before executing them.") //
             ("dry-run,D", "Scan the file and print the generated SQL commands but do not execute them.");
 
