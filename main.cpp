@@ -87,7 +87,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
                 auto host = blocale::conv::utf_to_utf<char>(variablesMap["host"].as<std::wstring>());
                 boost::trim(host);
                 if (variablesMap.count("host") && !variablesMap["host"].defaulted()
-                    && !boost::is_iequal()(host, boost::asio::ip::host_name()) && (host != "127.0.0.1"s) && !boost::is_iequal()(host, "localhost"s)) {
+                    && !boost::iequals(host, boost::asio::ip::host_name()) && (host != "127.0.0.1"s) && !boost::iequals(host, "localhost"s)) {
                     return std::make_unique<MclientMonetDBBulkLoader>(variablesMap["file-name"].as<std::wstring>());
                 } else {
                     return std::make_unique<NanodbcMonetDBBulkLoader>(variablesMap["file-name"].as<std::wstring>());
