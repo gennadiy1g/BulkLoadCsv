@@ -106,6 +106,10 @@ extern "C" int wmain(int argc, wchar_t** argv)
             if (variablesMap.count("pwd") && !variablesMap["pwd"].defaulted()) {
                 connectionParameters.push_back(std::make_pair(ConnectionParameterName::Password, variablesMap["pwd"].as<std::wstring>()));
             }
+            if (variablesMap.count("host") && !variablesMap["host"].defaulted()) {
+                connectionParameters.push_back(std::make_pair(ConnectionParameterName::Host, variablesMap["host"].as<std::wstring>()));
+            }
+
             if (connectionParameters.size()) {
                 bulkLoader->setConnectionParameters(connectionParameters);
             }
