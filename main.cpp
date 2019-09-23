@@ -67,8 +67,8 @@ extern "C" int wmain(int argc, wchar_t** argv)
         positionalOptions.add("file-name", 1).add("table-name", 1);
 
         bpo::variables_map variablesMap;
-        store(bpo::wcommand_line_parser(argc, argv).options(commandLineOptions).positional(positionalOptions).run(), variablesMap);
-        notify(variablesMap);
+        bpo::store(bpo::wcommand_line_parser(argc, argv).options(commandLineOptions).positional(positionalOptions).run(), variablesMap);
+        bpo::notify(variablesMap);
 
         if (variablesMap.count("help") || (!variablesMap.count("file-name"))) {
             std::cout << "Usage: BulkLoadCsv [OPTION]... FILE [NEW_TABLE]\n\n"
