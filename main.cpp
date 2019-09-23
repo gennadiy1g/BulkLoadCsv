@@ -49,9 +49,9 @@ extern "C" int wmain(int argc, wchar_t** argv)
         visibleOptions.add_options() //
             ("help,?", "Print usage information and exit.") //
             ("separator,S", bpo::wvalue<wchar_t>()->default_value(L',', ","), "Field separator character.") //
-            ("separator_unicode", bpo::wvalue<std::wstring>(), "Field separator character, Unicode code point.") //
+            ("separator_unicode", bpo::wvalue<std::wstring>(), "Field separator character, Unicode code point in decimal or hexadecimal form.") //
             ("quote,Q", bpo::wvalue<wchar_t>()->default_value(L'"', "\""), "String quote character.") //
-            ("quote_unicode", bpo::wvalue<std::wstring>(), "String quote character, Unicode code point.") //
+            ("quote_unicode", bpo::wvalue<std::wstring>(), "String quote character, Unicode code point in decimal or hexadecimal form.") //
             ("host,H", bpo::wvalue<std::wstring>()->default_value(L"localhost", "localhost"), "Name of the host on which the server runs"
                                                                                               " (requires Apr2019 release (11.33.3) of MonetDB).") //
             ("port,P", bpo::value<int>()->default_value(50000), "Port number of the server.") //
@@ -74,7 +74,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
             std::cout << "Usage: BulkLoadCsv [OPTION]... FILE [NEW_TABLE]\n\n"
                          "Bulk load a delimited text file FILE into a new table NEW_TABLE in a MonetDB database.\n"
                          "The first line of the file must contain names of the columns.\n\n"
-                         "Scan the FILE and detect data types, lengths and NULL (NOT NULL) constraints of its columns.\n"
+                         "Scan the FILE and detect data types, lengths, precisions, scales and NULL constraints of all columns.\n"
                          "Then generate and execute DROP TABLE IF EXISTS NEW_TABLE, CREATE TABLE NEW_TABLE and \n"
                          "COPY INTO NEW_TABLE SQL commands.\n\n";
             std::cout << visibleOptions << std::endl;
