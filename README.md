@@ -17,10 +17,8 @@ This program is useful if:
 ## Limitations
 
 * At this time, BulkLoadCsv is available only for 64-bit Windows.
-
 * Data types from the following subset of [built-in SQL types](https://www.monetdb.org/Documentation/Manuals/SQLreference/BuiltinTypes) are detected: 
 FLOAT, DECIMAL, TINYINT, SMALLINT, INT, BIGINT, BOOLEAN, CHAR, VARCHAR.
-
 * Data types from the following subset of [temporal types](https://www.monetdb.org/Documentation/SQLreference/Temporal) are detected:
 TIMESTAMP (formatted as YYYY-MM-DD HH.MI.SS.sss), DATE (formatted as YYYY-MM-DD), TIME (formatted as HH.MI.SS.sss).
 
@@ -28,10 +26,40 @@ TIMESTAMP (formatted as YYYY-MM-DD HH.MI.SS.sss), DATE (formatted as YYYY-MM-DD)
 
 * If MonetDB server is running on localhost, [MonetDB ODBC Driver](https://www.monetdb.org/downloads/Windows/Apr2019-SP1/MonetDB-ODBC-Installer-x86_64-20190830.msi) must be installed.
 * If MonetDB server is running on remote computer, [mclient](https://www.monetdb.org/Documentation/mclient-man-page) must be installed on the localhost in the default directory ("C:\Program Files\MonetDB\MonetDB5\mclient.bat"), and MonetDB on both computers must be [Apr2019 release](https://www.monetdb.org/downloads/Windows/Apr2019-SP1) (11.33.3) or later.
+* The first line of the delimited text file must contain names of the columns.
 
 ## Getting started
+```
+Usage: BulkLoadCsv [OPTION]... FILE [NEW_TABLE]
 
-If BulkLoadCsv has successfully imported the given file, it sets exit status to 0, otherwise it sets exit status to 1.
+Bulk load a delimited text file FILE into a new table NEW_TABLE in a MonetDB database.
+The first line of the file must contain names of the columns.
+
+Scan the FILE and detect data types, lengths, precisions, scales and NULL constraints of all columns.
+Then generate and execute DROP TABLE IF EXISTS NEW_TABLE, CREATE TABLE NEW_TABLE and
+COPY INTO NEW_TABLE commands.
+
+Allowed options:
+  -? [ --help ]                  Print usage information and exit.
+  -S [ --separator ] arg (=,)    Field separator character.
+  --separator_unicode arg        Field separator character, Unicode code point
+                                 in decimal or hexadecimal form.
+  -Q [ --quote ] arg (=")        String quote character.
+  --quote_unicode arg            String quote character, Unicode code point in
+                                 decimal or hexadecimal form.
+  -H [ --host ] arg (=localhost) Name of the host on which the server runs
+                                 (requires Apr2019 release (11.33.3) or later
+                                 of MonetDB).
+  -P [ --port ] arg (=50,000)    Port number of the server.
+  -U [ --uid ] arg (=monetdb)    User to connect as.
+  --pwd arg (=monetdb)           Password.
+  --print-sql                    Scan the file and print the generated SQL
+                                 commands before executing them.
+  -D [ --dry-run ]               Scan the file and print the generated SQL
+                                 commands but do not execute them.
+
+If the given file has been successfully imported, exit status is set to 0, otherwise exit status is set to 1.
+```
 
 ## Examples
 
