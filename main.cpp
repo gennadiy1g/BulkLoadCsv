@@ -53,7 +53,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
             ("quote,Q", bpo::wvalue<wchar_t>()->default_value(L'"', "\""), "String quote character.") //
             ("quote_unicode", bpo::wvalue<std::wstring>(), "String quote character, Unicode code point in decimal or hexadecimal form.") //
             ("host,H", bpo::wvalue<std::wstring>()->default_value(L"localhost", "localhost"), "Name of the host on which the server runs"
-                                                                                              " (requires Apr2019 release (11.33.3) of MonetDB).") //
+                                                                                              " (requires Apr2019 release (11.33.3) or later of MonetDB).") //
             ("port,P", bpo::value<int>()->default_value(50000), "Port number of the server.") //
             ("uid,U", bpo::wvalue<std::wstring>()->default_value(MonetDBBulkLoader::DefaultUserPassword, blocale::conv::utf_to_utf<char>(MonetDBBulkLoader::DefaultUserPassword)), "User to connect as.") //
             ("pwd", bpo::wvalue<std::wstring>()->default_value(MonetDBBulkLoader::DefaultUserPassword, blocale::conv::utf_to_utf<char>(MonetDBBulkLoader::DefaultUserPassword)), "Password.") //
@@ -76,8 +76,9 @@ extern "C" int wmain(int argc, wchar_t** argv)
                          "The first line of the file must contain names of the columns.\n\n"
                          "Scan the FILE and detect data types, lengths, precisions, scales and NULL constraints of all columns.\n"
                          "Then generate and execute DROP TABLE IF EXISTS NEW_TABLE, CREATE TABLE NEW_TABLE and \n"
-                         "COPY INTO NEW_TABLE SQL commands.\n\n";
+                         "COPY INTO NEW_TABLE commands.\n\n";
             std::cout << visibleOptions << std::endl;
+            std::cout << "If the given file has been successfully imported, exit status is set to 0, otherwise exit status is set to 1." << std::endl;
             return EXIT_SUCCESS;
         } else {
             conflictingOptions(variablesMap, "separator", "separator_unicode");
