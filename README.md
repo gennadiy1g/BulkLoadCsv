@@ -16,7 +16,13 @@ This program is useful if:
 
 ## Limitations
 
-At this time, BulkLoadCsv is available only for 64-bit Windows.
+* At this time, BulkLoadCsv is available only for 64-bit Windows.
+
+* Data types from the following subset of [built-in SQL types](https://www.monetdb.org/Documentation/Manuals/SQLreference/BuiltinTypes) are detected: 
+FLOAT, DECIMAL, TINYINT, SMALLINT, INT, BIGINT, BOOLEAN, CHAR, VARCHAR.
+
+* Data types from the following subset of [temporal types](https://www.monetdb.org/Documentation/SQLreference/Temporal) are detected:
+TIMESTAMP (formatted as YYYY-MM-DD HH.MI.SS.sss), DATE (formatted as YYYY-MM-DD), TIME (formatted as HH.MI.SS.sss).
 
 ## Prerequisites
 
@@ -24,6 +30,8 @@ At this time, BulkLoadCsv is available only for 64-bit Windows.
 * If MonetDB server is running on remote computer, [mclient](https://www.monetdb.org/Documentation/mclient-man-page) must be installed on the localhost in the default directory ("C:\Program Files\MonetDB\MonetDB5\mclient.bat"), and MonetDB on both computers must be [Apr2019 release](https://www.monetdb.org/downloads/Windows/Apr2019-SP1) (11.33.3) or later.
 
 ## Getting started
+
+If BulkLoadCsv has successfully imported the given file, it sets exit status to 0, otherwise it sets exit status to 1.
 
 ## Examples
 
