@@ -29,7 +29,7 @@ TIMESTAMP (formatted as YYYY-MM-DD HH.MI.SS.sss), DATE (formatted as YYYY-MM-DD)
 * The first line of the delimited text file must contain names of the columns.
 
 ## Getting started
-```
+
 Usage: BulkLoadCsv [OPTION]... FILE [NEW_TABLE]
 
 Bulk load a delimited text file FILE into a new table NEW_TABLE in a MonetDB database.
@@ -40,26 +40,22 @@ Then generate and execute DROP TABLE IF EXISTS NEW_TABLE, CREATE TABLE NEW_TABLE
 COPY INTO NEW_TABLE commands.
 
 Allowed options:
-  -? [ --help ]                  Print usage information and exit.
-  -S [ --separator ] arg (=,)    Field separator character.
-  --separator_unicode arg        Field separator character, Unicode code point
-                                 in decimal or hexadecimal form.
-  -Q [ --quote ] arg (=")        String quote character.
-  --quote_unicode arg            String quote character, Unicode code point in
-                                 decimal or hexadecimal form.
-  -H [ --host ] arg (=localhost) Name of the host on which the server runs
-                                 (requires Apr2019 release (11.33.3) or later
-                                 of MonetDB).
-  -P [ --port ] arg (=50,000)    Port number of the server.
-  -U [ --uid ] arg (=monetdb)    User to connect as.
-  --pwd arg (=monetdb)           Password.
-  --print-sql                    Scan the file and print the generated SQL
-                                 commands before executing them.
-  -D [ --dry-run ]               Scan the file and print the generated SQL
-                                 commands but do not execute them.
+
+Short [long] (=default)|Comment
+-|-
+-? [ --help ] | Print usage information and exit.
+-S [ --separator ] arg (=,) | Field separator character.
+--separator_unicode arg | Field separator character, Unicode code point in decimal or hexadecimal form.
+-Q [ --quote ] arg (=") | String quote character.
+--quote_unicode arg | String quote character, Unicode code point in decimal or hexadecimal form.
+-H [ --host ] arg (=localhost) | Name of the host on which the server runs (requires Apr2019 release (11.33.3) or later of MonetDB).
+-P [ --port ] arg (=50000) | Port number of the server.
+-U [ --uid ] arg (=monetdb) | User to connect as.
+--pwd arg (=monetdb) | Password.
+--print-sql | Scan the file and print the generated SQL commands before executing them.
+-D [ --dry-run ] | Scan the file and print the generated SQL commands but do not execute them.
 
 If the given file has been successfully imported, exit status is set to 0, otherwise exit status is set to 1.
-```
 
 ## Examples
 
